@@ -53,10 +53,10 @@ const MainLayout = () => {
             height: "4rm",
             display: "flex",
             justifyContent: "center",
-            justifyItems: "center",
+            alignItems: "center",
           }}
         >
-          <h1 style={{ height: "" }}>Amader University</h1>
+          <h1>Amader University</h1>
         </div>
         <Menu
           theme="dark"
