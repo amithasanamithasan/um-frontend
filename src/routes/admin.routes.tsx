@@ -1,61 +1,75 @@
+import { ReactNode } from "react";
 import AdminDashboard from "./admin/AdminDashboard";
 import CreateAdmin from "./admin/CreateAdmin";
 import CreateFaculty from "./admin/CreateFaculty";
 import CreateStudent from "./admin/CreateStudent";
 
-const adminPaths2 = [
+type TRoute = {
+  path: string;
+  element: ReactNode;
+};
+
+const adminPaths = [
   {
     name: "Dashboard",
-    label: "/admin/dashboard",
-    element: <AdminDashboard></AdminDashboard>,
+    path: "dashboard",
+    element: <AdminDashboard />,
   },
   {
     name: "User Management",
-    Children: [
+    children: [
       {
         name: "Create Admin",
-        label: "/admin/create-admin",
-        element: <CreateAdmin></CreateAdmin>,
+        path: "create-admin",
+        element: <CreateAdmin />,
       },
       {
         name: "Create Faculty",
-        label: "/admin/create-faculty",
-        element: <CreateFaculty></CreateFaculty>,
+        path: "create-faculty",
+        element: <CreateFaculty />,
       },
       {
         name: "Create Student",
-        label: "/admin/create-student",
-        element: <CreateStudent></CreateStudent>,
-      },
-    ],
-  },
-  {
-    name: "Course Management",
-    Children: [
-      {
-        name: " Offered Course",
-        label: "/admin/offered-course",
-        element: <CreateAdmin></CreateAdmin>,
+        path: "create-student",
+        element: <CreateStudent />,
       },
     ],
   },
 ];
 
-export const adminPaths = [
-  {
-    path: "dashboard",
-    element: <AdminDashboard></AdminDashboard>,
-  },
-  {
-    path: "create-student",
-    element: <CreateStudent></CreateStudent>,
-  },
-  {
-    path: "create-admin",
-    element: <CreateAdmin></CreateAdmin>,
-  },
-  {
-    path: "create-faculty",
-    element: <CreateFaculty></CreateFaculty>,
-  },
-];
+export const adminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
+  if (item.path && item.element) {
+    acc.push({
+      path: item.path,
+      element: item.element,
+    });
+  }
+  if (item.children) {
+    item.children.forEach((child) => {
+      acc.push({
+        path: child.path,
+        element: child.element,
+      });
+    });
+  }
+  return acc;
+}, []);
+
+// export const adminPaths = [
+//   {
+//     path: "dashboard",
+//     element: <AdminDashboard></AdminDashboard>,
+//   },
+//   {
+//     path: "create-student",
+//     element: <CreateStudent></CreateStudent>,
+//   },
+//   {
+//     path: "create-admin",
+//     element: <CreateAdmin></CreateAdmin>,
+//   },
+//   {
+//     path: "create-faculty",
+//     element: <CreateFaculty></CreateFaculty>,
+//   },
+// ];
