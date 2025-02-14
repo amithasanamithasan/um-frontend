@@ -8,7 +8,9 @@ import { Outlet } from "react-router-dom";
 import { adminPaths, adminSidenbarItems } from "../../routes/admin.routes";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import Sidebar from "./Sidebar";
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
+import { useAppDispatch } from "../../redux/hooks";
+import { logout } from "../../redux/features/auth/authSlice";
 
 const { Header, Content, Footer } = Layout;
 // const items: MenuProps["items"] = [
@@ -37,10 +39,16 @@ const { Header, Content, Footer } = Layout;
 // ];
 
 const MainLayout = () => {
+  const dispatch = useAppDispatch();
+  const handelLogout = () => {
+    dispatch(logout());
+  };
   return (
     <Layout style={{ height: "100vh" }}>
       <Sidebar></Sidebar>
+
       <Layout>
+        <Button onClick={handelLogout}>LOG_OUT</Button>
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
