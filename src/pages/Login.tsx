@@ -20,7 +20,7 @@ const Login = () => {
   });
 
   const [login] = useLoginMutation();
-  console.log("useLoginMutation:", useLoginMutation);
+
   // console.log("data", data);
   // console.log("error", error);
 
