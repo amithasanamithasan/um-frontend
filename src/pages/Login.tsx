@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Row } from "antd";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 
 import { useAppDispatch } from "../redux/hooks";
 import { setUser, TUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useLoginMutation } from "../redux/features/auth/authApi";
+
 import PHForm from "../components/form/PHForm";
 import PHInput from "../components/form/PHInput";
+import { useLoginMutation } from "../redux/features/auth/authApi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,6 +21,11 @@ const Login = () => {
   //     password: "amithasan123",
   //   },
   // });
+
+  const defaultValues = {
+    userId: "A-0004",
+    password: "amit123",
+  };
 
   const [login] = useLoginMutation();
 
@@ -32,23 +38,25 @@ const Login = () => {
 
     try {
       const userInfo = {
-        id: data.userid,
+        id: data.userId,
         password: data.password,
       };
+
       const res = await login(userInfo).unwrap();
+      console.log(res);
+
       const user = verifyToken(res.data.accessToken) as unknown as TUser;
-      console.log(user);
-      // console.log(res);
       dispatch(setUser({ user: user, token: res.data.accessToken }));
-      toast.success("Logged in  ", { id: toastId, duration: 2000 });
+
+      toast.success("Logged in successfully", { id: toastId, duration: 2000 });
       navigate(`/${user.role}/dashboard`);
     } catch (err) {
-      toast.error("Somthing Went Worng", { id: toastId, duration: 2000 });
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <PHForm onSubmit={onSubmit}>
+      <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
         <PHInput type="text" name="userId" label="ID:" />
         <PHInput type="text" name="password" label="Password" />
         <Button htmlType="submit">Login</Button>
