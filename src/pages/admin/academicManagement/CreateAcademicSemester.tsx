@@ -10,10 +10,12 @@ import { academicSemesterSchema } from "../../../schemas/academicManagementschem
 import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicSemesterManagement.api";
 import { toast } from "sonner";
 import { monthOptions } from "../../../constants/global";
+import { TRessponse } from "../../../types/global";
 
 const CreateAcademicSemester = () => {
   const [addAcademicSemester] = useAddAcademicSemesterMutation();
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Creating...");
     const name = semesterOptions[Number(data?.name) - 1]?.label;
     const semesterData = {
       name,
@@ -23,11 +25,14 @@ const CreateAcademicSemester = () => {
       endMonth: data.endMonth,
     };
     try {
-      console.log(semesterData);
-      const res = await addAcademicSemester(semesterData);
-      console.log(res);
+      const res = (await addAcademicSemester(semesterData)) as TRessponse;
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success("Semester Created", { id: toastId });
+      }
     } catch (err) {
-      toast.error("Something Went Wrong");
+      toast.error("Something Went Wrong", { id: toastId });
     }
   };
 
@@ -36,7 +41,7 @@ const CreateAcademicSemester = () => {
     value: String(currentYear + number),
     label: String(currentYear + number),
   }));
-  console.log(yearOptions);
+
   return (
     <Flex justify="center" align="center">
       <Col span={6}>
