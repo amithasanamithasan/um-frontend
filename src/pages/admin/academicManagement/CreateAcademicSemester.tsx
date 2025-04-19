@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
 
@@ -6,16 +7,28 @@ import PHSelect from "../../../components/form/PHSelect";
 import { semesterOptions } from "../../../constants/semester";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchema } from "../../../schemas/academicManagementschema";
+import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicSemesterManagement.api";
+import { toast } from "sonner";
+import { monthOptions } from "../../../constants/global";
 
 const CreateAcademicSemester = () => {
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const [addAcademicSemester] = useAddAcademicSemesterMutation();
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const name = semesterOptions[Number(data?.name) - 1]?.label;
     const semesterData = {
       name,
       code: data.name,
       year: data.year,
+      startMonth: data.startMonth,
+      endMonth: data.endMonth,
     };
-    console.log(semesterData);
+    try {
+      console.log(semesterData);
+      const res = await addAcademicSemester(semesterData);
+      console.log(res);
+    } catch (err) {
+      toast.error("Something Went Wrong");
+    }
   };
 
   const currentYear = new Date().getFullYear();
@@ -36,13 +49,9 @@ const CreateAcademicSemester = () => {
           <PHSelect
             label="Start Month"
             name="startMonth"
-            options={semesterOptions}
+            options={monthOptions}
           />
-          <PHSelect
-            label="End Month"
-            name="endMonth"
-            options={semesterOptions}
-          />
+          <PHSelect label="End Month" name="endMonth" options={monthOptions} />
 
           {/* <PHSelect label="Code" name="name" options={codeOptions} /> */}
           <Button htmlType="submit">Submit</Button>
