@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
-
 import { Button, Col, Flex } from "antd";
 import PHSelect from "../../../components/form/PHSelect";
 import { semesterOptions } from "../../../constants/semester";
@@ -10,7 +9,7 @@ import { academicSemesterSchema } from "../../../schemas/academicManagementschem
 import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicSemesterManagement.api";
 import { toast } from "sonner";
 import { monthOptions } from "../../../constants/global";
-import { TRessponse } from "../../../types/global";
+import { TRessponse } from "../../../types";
 
 const CreateAcademicSemester = () => {
   const [addAcademicSemester] = useAddAcademicSemesterMutation();
@@ -25,7 +24,10 @@ const CreateAcademicSemester = () => {
       endMonth: data.endMonth,
     };
     try {
-      const res = (await addAcademicSemester(semesterData)) as TRessponse;
+      const res = (await addAcademicSemester(
+        semesterData
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      )) as TRessponse;
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
