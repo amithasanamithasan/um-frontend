@@ -26,8 +26,7 @@ const CreateAcademicSemester = () => {
     try {
       const res = (await addAcademicSemester(
         semesterData
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      )) as TRessponse;
+      )) as TRessponse<unknown>;
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
