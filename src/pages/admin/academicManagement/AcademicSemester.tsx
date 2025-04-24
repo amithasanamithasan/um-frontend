@@ -92,7 +92,14 @@ const AcademicSemester = () => {
     console.log("params", pagination, filters, sorter, extra);
   };
 
-  return <Table columns={columns} dataSource={tableData} onChange={onChange} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={tableData}
+      loading={!semesterData}
+      onChange={onChange}
+    />
+  );
 };
 
 export default AcademicSemester;
