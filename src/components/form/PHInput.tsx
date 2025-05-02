@@ -1,20 +1,40 @@
-import { Form, Input } from "antd";
-import { Controller } from "react-hook-form";
+import { Form, Input, Select } from "antd";
+import { Controller, useFormContext } from "react-hook-form";
 
-type TInputProps = {
-  type: string;
-  name: string;
-  label?: string;
+type TOption = {
+  label: string;
+  value: string;
 };
 
-const PHInput = ({ type, name, label }: TInputProps) => {
+type TInputProps = {
+  type?: string;
+  name: string;
+  label?: string;
+  options?: TOption[];
+};
+
+const PHInput = ({ type = "text", name, label, options }: TInputProps) => {
+  const { control } = useFormContext();
+
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
+        control={control}
         render={({ field }) => (
           <Form.Item label={label}>
-            <Input {...field} type={type} id={name} size="large" />
+            {options ? (
+              <Select
+                {...field}
+                options={options}
+                onChange={(value) => field.onChange(value)}
+                onBlur={field.onBlur}
+                value={field.value}
+                size="large"
+              />
+            ) : (
+              <Input {...field} type={type} id={name} size="large" />
+            )}
           </Form.Item>
         )}
       />

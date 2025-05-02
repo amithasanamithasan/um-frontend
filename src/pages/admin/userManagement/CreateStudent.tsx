@@ -2,6 +2,7 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import { Button, Col, Divider, Row } from "antd";
+import { bloodGroupOptions, genderOptions } from "../../../types";
 
 const studentDummyData = {
   password: "student123",
@@ -71,17 +72,23 @@ const CreateStudent = () => {
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHInput type="text" name="gender" label="Gender" />
+              <PHInput options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput type="text" name="dateOfBirth" label="Death Of Birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHInput type="text" name="bloodGroup" label="Blood Group" />
+              <PHInput
+                options={bloodGroupOptions}
+                name="bloodGroup"
+                label="Blood Group"
+              />
             </Col>
+
             <Divider style={{ borderColor: "red", color: "red" }}>
               Contact Information
             </Divider>
+
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput type="email" name="email" label="Enter Your Email" />
             </Col>
@@ -107,6 +114,81 @@ const CreateStudent = () => {
                 type="text"
                 name="permanentAddress"
                 label="Permanent Address"
+              />
+            </Col>
+
+            <Divider style={{ borderColor: "red", color: "red" }}>
+              Guardian Information
+            </Divider>
+
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherName"
+                label="Father Name"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherOccupation"
+                label="Father Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherContactNo"
+                label="Father Contact No"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherName"
+                label="Mother Name"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherOccupation"
+                label="Mother Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherContactNo"
+                label="Mother Contact No"
+              />
+            </Col>
+            <Divider style={{ borderColor: "red", color: "red" }}>
+              Local Guardian Information
+            </Divider>
+
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput type="text" name="localGuardian.name" label=" Name" />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.occupation"
+                label="Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.contactNo"
+                label="Contact No"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.address"
+                label="address"
               />
             </Col>
           </Row>
