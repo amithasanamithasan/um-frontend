@@ -3,6 +3,9 @@ import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import { Button, Col, Divider, Row } from "antd";
 import { bloodGroupOptions, genderOptions } from "../../../types";
+import PHDatePicker from "../../../components/form/PHDatePicker";
+import PHSelect from "../../../components/form/PHSelect";
+import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicSemesterManagement.api";
 
 const studentDummyData = {
   password: "student123",
@@ -44,7 +47,51 @@ const studentDummyData = {
   },
 };
 
+// This is for Developmemt
+// Just for Checking
+
+const studentDefaultValues = {
+  name: {
+    firstName: "I am ",
+    middleName: "Student",
+    lastName: "Number 1",
+  },
+  gender: "male",
+  bloodGroup: "A+",
+  contactNo: "1235678",
+  emergencyContactNo: "987-654-3210",
+  presentAddress: "123 Main St, Cityville",
+  permanentAddress: "456 Oak St, Townsville",
+
+  guardian: {
+    fatherName: "James Doe",
+    fatherOccupation: "Engineer",
+    fatherContactNo: "111-222-3333",
+    motherName: "Mary Doe",
+    motherOccupation: "Teacher",
+    motherContactNo: "444-555-6666",
+  },
+
+  localGuardian: {
+    name: "Alice Johnson",
+    occupation: "Doctor",
+    contactNo: "777-888-9999",
+    address: "789 Pine St, Villageton",
+  },
+
+  admissionSemester: "65bb60ebf71fdd1add63b1c0",
+  academicDepartment: "65b4acae3dc8d4f3ad83e416",
+};
 const CreateStudent = () => {
+  const { data: sData, isLoading: sIsLoading } =
+    useGetAllSemestersQuery(undefined);
+  // console.log(sData);
+
+  const semesterOptions = sData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name} ${item.year}`,
+  }));
+  console.log(semesterOptions);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
 
@@ -55,7 +102,7 @@ const CreateStudent = () => {
   return (
     <Row>
       <Col span={24}>
-        <PHForm onSubmit={onSubmit}>
+        <PHForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
           <Divider style={{ borderColor: "red", color: "red" }}>
             Personal Information
           </Divider>
@@ -75,7 +122,7 @@ const CreateStudent = () => {
               <PHInput options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHInput type="text" name="dateOfBirth" label="Death Of Birth" />
+              <PHDatePicker name="dateOfBirth" label="Death Of Birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput
@@ -189,6 +236,23 @@ const CreateStudent = () => {
                 type="text"
                 name="localGuardian.address"
                 label="address"
+              />
+            </Col>
+          </Row>
+          <Divider>Academic Info.</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                options={semesterOptions}
+                disabled={sIsLoading}
+                name="admissionSemester"
+                label="Admission Semester"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                name="academicDepartment"
+                label="Admission Department"
               />
             </Col>
           </Row>

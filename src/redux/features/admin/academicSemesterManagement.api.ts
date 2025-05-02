@@ -1,17 +1,23 @@
 import { TQueryParams, TRessponseRedux } from "../../../types";
-import { TAcademicSemester } from "../../../types/academicManagement.type";
+import {
+  TAcademicDepartment,
+  TAcademicFaculty,
+  TAcademicSemester,
+} from "../../../types/academicManagement.type";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllSemester: builder.query({
+    getAllSemesters: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
+
         if (args) {
           args.forEach((item: TQueryParams) => {
             params.append(item.name, item.value as string);
           });
         }
+
         return {
           url: "/academic-semesters",
           method: "GET",
@@ -25,7 +31,6 @@ const academicManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
-
     addAcademicSemester: builder.mutation({
       query: (data) => ({
         url: "/academic-semesters/create-academic-semester",
@@ -33,8 +38,47 @@ const academicManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getAcademicFaculties: builder.query({
+      query: () => {
+        return { url: "/academic-faculties", method: "GET" };
+      },
+      transformResponse: (response: TRessponseRedux<TAcademicFaculty[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    addAcademicFaculty: builder.mutation({
+      query: (data) => ({
+        url: "/academic-faculties/create-academic-faculty",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAcademicDepartments: builder.query({
+      query: () => {
+        return { url: "/academic-departments", method: "GET" };
+      },
+      transformResponse: (response: TRessponseRedux<TAcademicDepartment[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    addAcademicDepartment: builder.mutation({
+      query: (data) => ({
+        url: "/academic-departments/create-academic-department",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllSemesterQuery, useAddAcademicSemesterMutation } =
-  academicManagementApi;
+export const {
+  useGetAllSemestersQuery,
+  useAddAcademicSemesterMutation,
+  useGetAcademicDepartmentsQuery,
+} = academicManagementApi;
