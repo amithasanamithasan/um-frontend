@@ -9,6 +9,8 @@ import CreateAdmin from "../pages/admin/userManagement/CreateAdmin";
 import CreateFaculty from "../pages/admin/userManagement/CreateFaculty";
 import CreateStudent from "../pages/admin/userManagement/CreateStudent";
 import StudentData from "../pages/admin/userManagement/StudentData";
+import StudentDetails from "../pages/admin/userManagement/StudentDetails";
+import StudentUpdate from "../pages/admin/userManagement/StudentUpdate";
 
 // type TRoute = {
 //   path: string;
@@ -74,6 +76,15 @@ export const adminPaths = [
         name: "Students",
         path: "Students-data",
         element: <StudentData />,
+      },
+      {
+        path: "Student-data/:studentId",
+        element: <StudentDetails />,
+      },
+      {
+        name: "StudentUpdate",
+        path: "Student-Update-data",
+        element: <StudentUpdate />,
       },
       {
         name: "Create Admin",
