@@ -1,4 +1,8 @@
-import { TAcademicDepartment, TAcademicFaculty, TAcademicSemester } from ".";
+import {
+  TAcademicDepartment,
+  TAcademicFaculty,
+  TAcademicSemester,
+} from "./academicManagement.type";
 
 export interface TStudent {
   _id: string;
