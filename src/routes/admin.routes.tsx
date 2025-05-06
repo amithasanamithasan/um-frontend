@@ -8,6 +8,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import CreateAdmin from "../pages/admin/userManagement/CreateAdmin";
 import CreateFaculty from "../pages/admin/userManagement/CreateFaculty";
 import CreateStudent from "../pages/admin/userManagement/CreateStudent";
+import StudentData from "../pages/admin/userManagement/StudentData";
 
 // type TRoute = {
 //   path: string;
@@ -65,6 +66,16 @@ export const adminPaths = [
     name: "User Management",
     children: [
       {
+        name: "Create Student",
+        path: "create-student",
+        element: <CreateStudent />,
+      },
+      {
+        name: "Students",
+        path: "Students-data",
+        element: <StudentData />,
+      },
+      {
         name: "Create Admin",
         path: "create-admin",
         element: <CreateAdmin />,
@@ -74,11 +85,7 @@ export const adminPaths = [
         path: "create-faculty",
         element: <CreateFaculty />,
       },
-      {
-        name: "Create Student",
-        path: "create-student",
-        element: <CreateStudent />,
-      },
+
       {
         name: "Create Member",
         path: "create-member",
