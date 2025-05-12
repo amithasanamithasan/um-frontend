@@ -1,23 +1,29 @@
-import { Button, Table, TableColumnsType, TableProps } from "antd";
+import { Dropdown, Table, TableColumnsType, Tag } from "antd";
 
-import { TAcademicSemester } from "../../../types/academicManagement.type";
 import { useGetAllRegisteredSemestersQuery } from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
+import { TSemester } from "../../../types";
 
-export type TTableData = Pick<
-  TAcademicSemester,
-  "name" | "year" | "startMonth" | "endMonth"
->;
+export type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
+
+const items = [
+  {
+    label: <span style={{ color: "blue" }}>Upcoming</span>,
+    key: "UPCOMING",
+  },
+  {
+    label: <span style={{ color: "green" }}>Ongoing</span>,
+    key: "ONGOING",
+  },
+  {
+    label: <span style={{ color: "red" }}>Ended</span>,
+    key: "ENDED",
+  },
+];
+
 const RegisteredSemesters = () => {
-  // const [params, setParams] = useState<TQueryParams[] | undefined>(undefined);
-  // const { data: semesterData } = useGetAllSemesterQuery([
-  //   { name: "name", value: "Summer" },
-  // ]);
-  const {
-    data: semesterData,
-    isLoading,
-    isFetching,
-  } = useGetAllRegisteredSemestersQuery(undefined);
+  const { data: semesterData, isFetching } =
+    useGetAllRegisteredSemestersQuery(undefined);
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, startDate, endDate, status }) => ({
       key: _id,
@@ -27,7 +33,13 @@ const RegisteredSemesters = () => {
       status,
     })
   );
-
+  const handelStatusDropdown = ({ key }: { key: string }) => {
+    console.log(key);
+  };
+  const menuProps = {
+    items,
+    onClick: handelStatusDropdown,
+  };
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
@@ -38,6 +50,15 @@ const RegisteredSemesters = () => {
       title: "Status",
       key: "status",
       dataIndex: "status",
+      render: (item: string) => {
+        if (item === "UPCOMING") {
+          return <Tag color="blue">{item}</Tag>;
+        } else if (item === "ONGOING") {
+          return <Tag color="green">{item}</Tag>;
+        } else if (item === "ENDED") {
+          return <Tag color="red">{item}</Tag>;
+        }
+      },
     },
     {
       title: "Start Date",
@@ -55,7 +76,7 @@ const RegisteredSemesters = () => {
       render: () => {
         return (
           <div>
-            <Button>Update</Button>
+            <Dropdown menu={menuProps}>Update</Dropdown>
           </div>
         );
       },
