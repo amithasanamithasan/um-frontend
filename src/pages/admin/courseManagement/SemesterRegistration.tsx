@@ -4,18 +4,16 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
 import { Button, Col, Flex } from "antd";
 import PHSelect from "../../../components/form/PHSelect";
-import {
-  useAddAcademicSemesterMutation,
-  useGetAllSemestersQuery,
-} from "../../../redux/features/admin/academicSemesterManagement.api";
+import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicSemesterManagement.api";
 import { toast } from "sonner";
 import PHDatePicker from "../../../components/form/PHDatePicker";
 import PHInput from "../../../components/form/PHInput";
 import { semesterStatusOptions } from "../../../constants/semester";
 import { TRessponse } from "../../../types";
+import { useAddRegisteredSemesterMutation } from "../../../redux/features/admin/courseManagement";
 
 const SemesterRegistration = () => {
-  const [addSemester] = useAddAcademicSemesterMutation();
+  const [addSemester] = useAddRegisteredSemesterMutation();
   const { data: academicSemester } = useGetAllSemestersQuery([
     { name: "sort", value: "year" },
   ]);
@@ -24,6 +22,7 @@ const SemesterRegistration = () => {
     label: `${item.name} ${item.year}`,
   }));
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    // console.log(data);
     const toastId = toast.loading("Creating...");
 
     const semesterData = {
@@ -31,7 +30,8 @@ const SemesterRegistration = () => {
       minCredit: Number(data.minCredit),
       maxCredit: Number(data.maxCredit),
     };
-    console.log(semesterData);
+    // console.log(semesterData);
+
     try {
       const res = (await addSemester(semesterData)) as TRessponse<any>;
       console.log(res);
