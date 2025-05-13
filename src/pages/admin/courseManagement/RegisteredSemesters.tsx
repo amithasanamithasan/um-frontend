@@ -1,8 +1,13 @@
-import { Dropdown, Table, TableColumnsType, Tag } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
 
-import { useGetAllRegisteredSemestersQuery } from "../../../redux/features/admin/courseManagement";
+import {
+  useGetAllRegisteredSemestersQuery,
+  useUpdateRegisteredSemesterMutation,
+} from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
 import { TSemester } from "../../../types";
+import { useState } from "react";
 
 export type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
@@ -22,6 +27,9 @@ const items = [
 ];
 
 const RegisteredSemesters = () => {
+  const [SemesterId, setSemesterId] = useState<string | null>(null);
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
+  console.log(SemesterId);
   const { data: semesterData, isFetching } =
     useGetAllRegisteredSemestersQuery(undefined);
   const tableData = semesterData?.data?.map(
@@ -33,12 +41,20 @@ const RegisteredSemesters = () => {
       status,
     })
   );
-  const handelStatusDropdown = ({ key }: { key: string }) => {
-    console.log(key);
+  const handelStatusUpdate = (data: any) => {
+    // console.log("semester", SemesterId);
+    // console.log("new status", data.key);
+    const updateData = {
+      id: SemesterId,
+      data: {
+        status: data.key,
+      },
+    };
+    updateSemesterStatus(updateData);
   };
   const menuProps = {
     items,
-    onClick: handelStatusDropdown,
+    onClick: handelStatusUpdate,
   };
   const columns: TableColumnsType<TTableData> = [
     {
@@ -73,10 +89,12 @@ const RegisteredSemesters = () => {
     {
       title: "Action",
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
           <div>
-            <Dropdown menu={menuProps}>Update</Dropdown>
+            <Dropdown menu={menuProps} trigger={["click"]}>
+              <Button onClick={() => setSemesterId(item.key)}>UPDATE</Button>
+            </Dropdown>
           </div>
         );
       },
