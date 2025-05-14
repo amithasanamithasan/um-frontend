@@ -1,5 +1,8 @@
 import { Button, Modal, Table } from "antd";
-import { useGetAllCoursesQuery } from "../../../redux/features/admin/courseManagement";
+import {
+  useAddFacultiesMutation,
+  useGetAllCoursesQuery,
+} from "../../../redux/features/admin/courseManagement";
 import { useState } from "react";
 import PHForm from "../../../components/form/PHForm";
 import PHSelect from "../../../components/form/PHSelect";
@@ -12,17 +15,21 @@ type TCourse = {
   code: number;
 };
 
-const AddFacultyModal = ({ data }) => {
-  console.log(data.key);
+const AddFacultyModal = ({ facultyInfo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: facultiesData } = useGetAllFacultiesQuery(undefined);
+  const [addFacultiesData] = useAddFacultiesMutation();
   const facultiesOptions = facultiesData?.data?.map((item) => ({
     value: item._id,
     label: item.fullName,
   }));
 
   const handelSubmit = (data) => {
-    console.log(data);
+    const facultyData = {
+      courseId: facultyInfo.key,
+      data,
+    };
+    addFacultiesData(facultyData);
   };
   const showModal = () => {
     setIsModalOpen(true);
@@ -84,7 +91,7 @@ const Courses = () => {
       title: "Action",
       key: "x",
       render: (item) => {
-        return <AddFacultyModal data={item} />;
+        return <AddFacultyModal facultyInfo={item} />;
       },
     },
   ];
