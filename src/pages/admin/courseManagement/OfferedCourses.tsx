@@ -1,51 +1,10 @@
-import { Button, Col, Flex } from "antd";
-import PHForm from "../../../components/form/PHForm";
-import PHInput from "../../../components/form/PHInput";
-import { useGetAcademicFacultiesQuery } from "../../../redux/features/admin/academicSemesterManagement.api";
-import PHSelectWithWatch from "../../../components/form/PHSelectWithWatch";
-import { useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-
-interface TOfferedCourse extends FieldValues {
-  academicSemester: string;
-  test: string;
-}
-
 const OfferedCourses = () => {
-  const [selectedValue, setSelectedValue] = useState("");
-  const { data: academicFacultyData } = useGetAcademicFacultiesQuery(undefined);
-  const academicFacultyOptions = academicFacultyData?.data?.map((item) => ({
-    value: item._id,
-    label: item.name,
-  }));
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const formData = data as TOfferedCourse;
-    console.log(formData);
-  };
-
   return (
-    <Flex justify="center" align="center">
-      <Col span={6}>
-        <PHForm onSubmit={onSubmit}>
-          <PHSelectWithWatch
-            label="Academic Semester"
-            name="academicSemester"
-            options={academicFacultyOptions}
-            onValueChange={setSelectedValue}
-          />
-
-          <PHInput
-            disabled={!selectedValue}
-            type="text"
-            name="test"
-            label="Test"
-          />
-
-          <Button htmlType="submit">Submit</Button>
-        </PHForm>
-      </Col>
-    </Flex>
+    <div>
+      <h1>
+        <p>This is the page for offered courses</p>
+      </h1>
+    </div>
   );
 };
 

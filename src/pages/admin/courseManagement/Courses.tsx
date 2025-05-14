@@ -7,6 +7,7 @@ import { useState } from "react";
 import PHForm from "../../../components/form/PHForm";
 import PHSelect from "../../../components/form/PHSelect";
 import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagement.Api";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 type TCourse = {
   _id: string;
@@ -15,7 +16,13 @@ type TCourse = {
   code: number;
 };
 
-const AddFacultyModal = ({ facultyInfo }) => {
+type TFacultyInfo = {
+  key: string;
+  title: string;
+  code: string;
+};
+
+const AddFacultyModal = ({ facultyInfo }: { facultyInfo: TFacultyInfo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: facultiesData } = useGetAllFacultiesQuery(undefined);
   const [addFacultiesData] = useAddFacultiesMutation();
@@ -24,7 +31,7 @@ const AddFacultyModal = ({ facultyInfo }) => {
     label: item.fullName,
   }));
 
-  const handelSubmit = (data) => {
+  const handelSubmit: SubmitHandler<FieldValues> = (data) => {
     const facultyData = {
       courseId: facultyInfo.key,
       data,
@@ -90,7 +97,7 @@ const Courses = () => {
     {
       title: "Action",
       key: "x",
-      render: (item) => {
+      render: (item: TFacultyInfo) => {
         return <AddFacultyModal facultyInfo={item} />;
       },
     },
