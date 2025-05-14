@@ -11,9 +11,16 @@ type TInputProps = {
   name: string;
   label?: string;
   options?: TOption[];
+  disabled?: boolean;
 };
 
-const PHInput = ({ type = "text", name, label, options }: TInputProps) => {
+const PHInput = ({
+  type = "text",
+  name,
+  label,
+  options,
+  disabled,
+}: TInputProps) => {
   const { control } = useFormContext();
 
   return (
@@ -33,7 +40,13 @@ const PHInput = ({ type = "text", name, label, options }: TInputProps) => {
                 size="large"
               />
             ) : (
-              <Input {...field} type={type} id={name} size="large" />
+              <Input
+                {...field}
+                type={type}
+                id={name}
+                size="large"
+                disabled={disabled}
+              />
             )}
           </Form.Item>
         )}

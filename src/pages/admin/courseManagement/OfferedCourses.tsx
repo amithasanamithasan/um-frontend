@@ -4,6 +4,12 @@ import PHInput from "../../../components/form/PHInput";
 import { useGetAcademicFacultiesQuery } from "../../../redux/features/admin/academicSemesterManagement.api";
 import PHSelectWithWatch from "../../../components/form/PHSelectWithWatch";
 import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+
+interface TOfferedCourse extends FieldValues {
+  academicSemester: string;
+  test: string;
+}
 
 const OfferedCourses = () => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -13,8 +19,9 @@ const OfferedCourses = () => {
     label: item.name,
   }));
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const formData = data as TOfferedCourse;
+    console.log(formData);
   };
 
   return (
@@ -27,7 +34,13 @@ const OfferedCourses = () => {
             options={academicFacultyOptions}
             onValueChange={setSelectedValue}
           />
-          <PHInput type="text" name="test" label="Test" />
+
+          <PHInput
+            disabled={!selectedValue}
+            type="text"
+            name="test"
+            label="Test"
+          />
 
           <Button htmlType="submit">Submit</Button>
         </PHForm>
