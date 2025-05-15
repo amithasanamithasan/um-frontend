@@ -39,6 +39,13 @@ const PHInput = ({
                 value={field.value}
                 size="large"
               />
+            ) : type === "password" ? (
+              <Input.Password
+                {...field}
+                id={name}
+                size="large"
+                disabled={disabled}
+              />
             ) : (
               <Input
                 {...field}

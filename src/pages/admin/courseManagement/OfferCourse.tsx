@@ -31,6 +31,16 @@ interface TOfferedCourse extends FieldValues {
   test: string;
 }
 
+interface TCourse {
+  _id: string;
+  title: string;
+}
+
+interface TFaculty {
+  _id: string;
+  fullName: string;
+}
+
 const OfferCourse = () => {
   const [courseId, setCourseId] = useState("");
   const { data: facultiesData, isFetching: fechingFaculties } =
@@ -62,12 +72,12 @@ const OfferCourse = () => {
       label: item.name,
     })
   );
-  const courseOptions = coursesData?.data?.map((item) => ({
+  const courseOptions = coursesData?.data?.map((item: TCourse) => ({
     value: item._id,
     label: item.title,
   }));
 
-  const facultyOptions = facultiesData?.data?.faculties?.map((item) => ({
+  const facultyOptions = facultiesData?.data?.map((item: TFaculty) => ({
     value: item._id,
     label: item.fullName,
   }));
