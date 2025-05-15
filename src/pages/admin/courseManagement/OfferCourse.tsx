@@ -9,6 +9,7 @@ import PHSelectWithWatch from "../../../components/form/PHSelectWithWatch";
 import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import {
+  useAddCourseFacultyQuery,
   useGetAllCoursesQuery,
   useGetAllRegisteredSemestersQuery,
 } from "../../../redux/features/admin/courseManagement";
@@ -32,6 +33,8 @@ interface TOfferedCourse extends FieldValues {
 
 const OfferCourse = () => {
   const [courseId, setCourseId] = useState("");
+  const { data: facultiesData, isFetching: fechingFaculties } =
+    useAddCourseFacultyQuery(courseId, { skip: !courseId });
   const { data: semesterRegistrationData } = useGetAllRegisteredSemestersQuery([
     { name: "sort", value: "year" },
     { name: "status", value: "UPCOMING" },
@@ -62,6 +65,11 @@ const OfferCourse = () => {
   const courseOptions = coursesData?.data?.map((item) => ({
     value: item._id,
     label: item.title,
+  }));
+
+  const facultyOptions = facultiesData?.data?.faculties?.map((item) => ({
+    value: item._id,
+    label: item.fullName,
   }));
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -95,10 +103,10 @@ const OfferCourse = () => {
             label="Course"
           />
           <PHSelect
-            disabled={!courseId}
+            disabled={!courseId || fechingFaculties}
             name="faculty"
             label="Faculty"
-            options={[]}
+            options={facultyOptions}
           />
           <PHInput type="text" name="section" label="Section" />
           <PHInput type="text" name="maxCapacity" label="Max Capacity" />
