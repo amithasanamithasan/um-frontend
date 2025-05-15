@@ -14,7 +14,11 @@ const userRole = {
   STUDENT: "student",
 };
 
-const Sidebar = () => {
+interface SidebarProps {
+  collapsed: boolean;
+}
+
+const Sidebar = ({ collapsed }: SidebarProps) => {
   const user = useAppSelector(selectCurrentUser);
   // console.log(user);
   let sidebarItems;
@@ -35,7 +39,23 @@ const Sidebar = () => {
   }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0" style={{ height: "100vh" }}>
+    <Sider
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+      breakpoint="lg"
+      collapsedWidth={0}
+      style={{
+        height: "100vh",
+        position: "sticky",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+        overflow: "auto",
+      }}
+      width={250}
+      theme="dark"
+    >
       <div
         style={{
           color: "white",
@@ -43,15 +63,26 @@ const Sidebar = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          padding: "0 16px",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
         }}
       >
-        <h1>PH Uni</h1>
+        <h1 style={{ margin: 0, fontSize: collapsed ? "1.2rem" : "1.5rem" }}>
+          PH Uni
+        </h1>
       </div>
       <Menu
         theme="dark"
         mode="inline"
         defaultSelectedKeys={["4"]}
         items={sidebarItems}
+        style={{
+          height: "calc(100vh - 4rem)",
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
       />
     </Sider>
   );
