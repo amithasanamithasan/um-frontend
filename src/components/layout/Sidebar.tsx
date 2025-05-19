@@ -4,7 +4,8 @@ import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
 import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { useCurrentToken } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 
 const { Sider } = Layout;
 
@@ -17,10 +18,17 @@ const userRole = {
 interface SidebarProps {
   collapsed: boolean;
 }
+interface TUser {
+  role: string;
+}
 
 const Sidebar = ({ collapsed }: SidebarProps) => {
-  const user = useAppSelector(selectCurrentUser);
-  // console.log(user);
+  const token = useAppSelector(useCurrentToken);
+  let user;
+  if (token) {
+    user = verifyToken(token) as TUser | null;
+  }
+
   let sidebarItems;
 
   switch (user!.role) {
