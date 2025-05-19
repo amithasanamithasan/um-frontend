@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUser,
   useCurrentToken,
+  logout,
 } from "../../redux/features/auth/authSlice";
 import { Navigate } from "react-router-dom";
 
@@ -11,17 +12,22 @@ type TProtectedRouteProps = {
   role: string;
 };
 
+interface TUser {
+  role: string;
+}
+
 const ProtectedRoute = ({ children, role }: TProtectedRouteProps) => {
-  const token = useAppSelector(useCurrentToken); // Directly get the token value
-  const user = useAppSelector(selectCurrentUser);
-  console.log(user);
-  if (role === "admin") {
-    if (!token) {
-      return <Navigate to="/login" replace={true} />;
-    }
+  const token = useAppSelector(useCurrentToken);
+  const user = useAppSelector(selectCurrentUser) as TUser | null;
+  const dispatch = useAppDispatch();
+
+  if (!token || !user) {
+    dispatch(logout());
+    return <Navigate to="/login" replace={true} />;
   }
 
-  if (!token) {
+  if (role && role !== user.role) {
+    dispatch(logout());
     return <Navigate to="/login" replace={true} />;
   }
 
