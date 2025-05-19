@@ -38,6 +38,10 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     const errorData = result.error as TError;
     toast.error(errorData.data.message);
   }
+  if (result?.error?.status === 403) {
+    const errorData = result.error as TError;
+    toast.error(errorData.data.message);
+  }
 
   if (result?.error?.status === 401) {
     //* Send Refresh
